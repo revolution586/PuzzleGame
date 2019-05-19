@@ -1,5 +1,15 @@
 package PuzzleGame;
 
+//The goal of this little game is to form a picture.//
+//Buttons containing images are moved by clicking on them//
+//Only buttons adjacent to the empty button can be moved//
+
+//We use an image of a Sid character from the Ice Age movie//
+//We scale the image and cut it into twelve pieces//
+//These pieces are used by JButton components//
+//The last piece is not used; we have an empty button instead//
+//You can download some reasonably large picture and use it in this game//
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -65,6 +75,7 @@ class MyButton extends JButton {
 				setBorder(BorderFactory.createLineBorder(Color.gray));
 			}
 		});
+	//When we hover a mouse point over the button, its border changes to yellow colour//
 	}
 	
 	public void setLastButton() {
@@ -76,6 +87,10 @@ class MyButton extends JButton {
 		
 		return isLastButton;
 	}
+	
+	//There is one button that we call the last button//
+	//It is a button that does not have an image//
+	//Other buttons swap space with this one//
 }
 
 public class PuzzleEx extends JFrame {
@@ -92,6 +107,9 @@ public class PuzzleEx extends JFrame {
 	
 	private final int NUMBER_OF_BUTTONS = 12;
 	private final int DESIRED_WIDTH = 300;
+	
+	//The image that we use to form is scaled to have the desired width//
+	//With the getNewHeight() method we calculate the new height, keeping the image's ratio//
 	
 	public PuzzleEx() {
 		
@@ -115,11 +133,17 @@ public class PuzzleEx extends JFrame {
 		solution.add(new Point(3,1));
 		solution.add(new Point(3,2));
 		
+		//The solution array list stores the correct order of buttons which forms the image//
+		//Each button is identified by one Point//
+		
 		buttons = new ArrayList<>();
 		
 		panel = new JPanel();
 		panel.setBorder(BorderFactory.createLineBorder(Color.gray));
 		panel.setLayout(new GridLayout(4, 3, 0, 0)); 
+		
+		//We use a GridLayout to store our components//
+		//The layout consists of 4 rows and 3 columns.//
 		
 		try {
 			source = loadImage();
@@ -144,9 +168,15 @@ public class PuzzleEx extends JFrame {
 				image = createImage(new FilteredImageSource(resized.getSource(),
 								new CropImageFilter(j * width / 3, i * height / 4,
 										(width / 3), height / 4)));
+				//CropImageFilter is used to cut a rectanggular shape from the already resized image source//
+				//It is meant to be used in conjunction with a FilteredImageSource object to produce cropped versions of existing images//
 				
 				MyButton button = new MyButton(image);
 				button.putclieintProperty("position", new Point(i, j));
+				
+				//Buttons are identified by their position client property//
+				//It is a point containing the button's correct row and column position in the picture//
+				//These properties are used to find out if we have the correct order of buttons in the window//
 				
 				if (i == 3 && j == 2) {
 					lastButton = new MyButton();
