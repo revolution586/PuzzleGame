@@ -187,11 +187,19 @@ public class PuzzleEx extends JFrame {
 				} else {
 					buttons.add(button);
 				}
+				
+				//The button with no image is called the last button; it is placed at the end of the grid in the bottom-right corner//
+				//It is the button that swaps its position wiith the adjacent button that is being clicked//
+				//We set its isLastButton flag with the setLastButton() method.//
 			}
 		}
 		
 		Collections.shuffle(buttons);
 		buttons.add(lastButton);
+		
+		//We randomly reorder the elements of the buttons list//
+		//The last button, i.e. the button with no image, is inserted at the end of list//
+		//It is not supposed to be shuffled, it always goes at the end when we start the Puzzle game//
 		
 		for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
 			
@@ -200,6 +208,9 @@ public class PuzzleEx extends JFrame {
 			btn.setBorder(BorderFactory.createLineBorder(Color.gray));
 			btn.addActionListener(new ClickAction());
 		}
+		
+		//All the components from the buttons list are placed on the panel//
+		//We create some gray border around the buttons and add a click action listener//
 		
 		pack();
 		setTitle("Puzzle");
@@ -215,12 +226,19 @@ public class PuzzleEx extends JFrame {
 		return newHeight;
 	}
 	
+	//The getNewHeight() method calculates the height of the image based on the desired width//
+	//The image's ratio is kept//
+	//We scale the image using these values//
+	
 	private BufferedImage loadImage() throws IOException {
 		
 		BufferedImage bimg = ImageIO.read(new File("src/resources/icesid.jpg"));
 		
 		return bimg;
 	}
+	
+	//A JPG image is loaded from   the disk//
+	//ImageIO's read() method returns a BufferedImage, which is Swing's important class for manipulating images//
 	
 	private BufferedImage resizeImage(BufferedImage originalImage, int width,
 							int height, int type) throws IOException {
@@ -233,6 +251,8 @@ public class PuzzleEx extends JFrame {
 		return resizedImage;
 	}
 	
+	//The original image is resized by creating a new BufferedImage with new dimensions//
+	//We paint from the original image into this new buffered image//
 	private class ClickAction extends AbstractAction {
 		
 		@Override
@@ -262,6 +282,11 @@ public class PuzzleEx extends JFrame {
 				}
 			}
 					
+			//Buttons are stored in an array list//
+			//This list is then mapped to the grid of the panel//
+			//We get the indexes of the last button and the clicked button//
+			//They are swapped using the Collections.swap() if they are adjacent//
+					
 		private void updateButtons() {
 			
 			panel.removeAll();
@@ -273,7 +298,12 @@ public class PuzzleEx extends JFrame {
 			
 			panel.validate();
 		}
-	
+		
+		//The updateButtons() method maps the list to the panel's grid//
+		//First, all components are removed with the removeAll() method//
+		//A for loop is used to go through the buttons list to add the reordered buttons back to the panel's layout manager//
+		//Finally, the validate() method implements the new layout//
+					
 	private void checkSolution() {
 		
 		List<Point> current = new ArrayList<>();
@@ -287,6 +317,9 @@ public class PuzzleEx extends JFrame {
 								"Congrataluations", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
+		
+	//Solution checking is done by comparing the list of points of the correctly ordered buttons with the current list containing the order of buttons from the window//
+	//A message dialog is shown in case the solution is reached//
 					
 	public static boolean compareList(List ls1, List ls2) {
 		
